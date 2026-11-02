@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L3 2000 單字唸讀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #FAFAF8; --surface: #FFFFFF; --surface-2: #EEF4F3; --ink: #1E2A2D; --muted: #56656A;
+  --line: #D5DEDC; --teal: #1B6E6B; --teal-ink: #FFFFFF; --playing: #FBE7DC; --orange: #B5531F;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141B1C; --surface: #1C2526; --surface-2: #223031; --ink: #E8EEEC; --muted: #A9B8B6;
+    --line: #34474A; --teal: #5FB8B3; --teal-ink: #0F1B1C; --playing: #4A2C1E; --orange: #F0A070;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141B1C; --surface: #1C2526; --surface-2: #223031; --ink: #E8EEEC; --muted: #A9B8B6;
+  --line: #34474A; --teal: #5FB8B3; --teal-ink: #0F1B1C; --playing: #4A2C1E; --orange: #F0A070;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif; font-size: 18px; line-height: 1.5; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 24px 20px 48px; }
+h1 { font-size: 28px; margin: 0; line-height: 1.25; }
+.sub { color: var(--muted); margin: 4px 0 18px; font-size: 16px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.tabs button {
+  font: inherit; font-size: 17px; font-weight: 700; padding: 8px 18px; border-radius: 999px; cursor: pointer;
+  border: 2px solid var(--teal); background: transparent; color: var(--teal);
+}
+.tabs button[aria-pressed="true"] { background: var(--teal); color: var(--teal-ink); }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; background: var(--surface-2); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; }
+.controls label { display: inline-flex; align-items: center; gap: 6px; font-size: 17px; cursor: pointer; }
+.controls input { width: 20px; height: 20px; accent-color: var(--teal); }
+.btn {
+  font: inherit; font-size: 17px; font-weight: 700; padding: 9px 18px; border-radius: 10px; cursor: pointer;
+  border: 2px solid var(--teal); background: transparent; color: var(--teal);
+}
+.btn.primary { background: var(--teal); color: var(--teal-ink); }
+.btn:focus-visible, .tabs button:focus-visible, .word:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.word {
+  font: inherit; text-align: left; cursor: pointer; background: var(--surface); color: var(--ink);
+  border: 2px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px;
+  transition: border-color .15s, background-color .15s;
+}
+.word:hover { border-color: var(--teal); }
+.word .en { font-size: 30px; font-weight: 700; color: var(--teal); line-height: 1.2; }
+.word .zh { font-size: 20px; }
+.word .tip { font-size: 14px; color: var(--muted); }
+.word.playing { border-color: var(--orange); background: var(--playing); }
+.hide-zh .word .zh { visibility: hidden; }
+.hide-zh .word.revealed .zh { visibility: visible; }
+.msg { min-height: 26px; margin-top: 14px; color: var(--muted); font-size: 16px; }
+@media (prefers-reduced-motion: reduce) { .word { transition: none; } }
+@media (max-width: 520px) { .grid { grid-template-columns: 1fr 1fr; } .word .en { font-size: 24px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>L3 2000 單字唸讀</h1>
+  <p class="sub">點一下單字就會唸出來。先跟著唸，再把講義 Part 6 每個字寫三遍。</p>
+
+  <div class="tabs" role="group" aria-label="選擇字表">
+    <button type="button" data-day="0" aria-pressed="true">Day 1 職業</button>
+    <button type="button" data-day="1" aria-pressed="false">Day 2 職業與人物</button>
+    <button type="button" data-day="2" aria-pressed="false">Day 3 個性形容詞</button>
+  </div>
+
+  <div class="controls">
+    <button type="button" class="btn primary" id="playAll">全部唸一次</button>
+    <button type="button" class="btn" id="stop">停止</button>
+    <label><input type="checkbox" id="slow" checked> 慢慢唸</label>
+    <label><input type="checkbox" id="three"> 每個字唸三遍</label>
+    <label><input type="checkbox" id="hideZh"> 遮住中文（考自己）</label>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+</div>
+
+<script>
+const DAYS = [
+  [["doctor","醫生"],["nurse","護理師"],["farmer","農夫"],["driver","司機"],["engineer","工程師"],["scientist","科學家"],["lawyer","律師"],["reporter","記者"],["soldier","士兵"],["waiter","服務生"]],
+  [["businessman","商人"],["manager","經理"],["worker","工人"],["secretary","祕書"],["clerk","店員"],["police officer","警察"],["artist","藝術家"],["actor","男演員"],["actress","女演員"],["gentleman","紳士"]],
+  [["brave","勇敢的"],["careful","小心的"],["kind","親切的"],["patient","有耐心的"],["smart","聰明的"],["friendly","友善的"],["honest","誠實的"],["hard-working","努力的"],["gentle","溫柔的"],["confident","有自信的"]]
+];
+let day = 0;
+let voice = null;
+const synth = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+const $ = id => document.getElementById(id);
+const msg = t => { $("msg").textContent = t; };
+
+function pickVoice() {
+  if (!synth) return;
+  const vs = synth.getVoices();
+  voice = vs.find(v => /en[-_]US/i.test(v.lang) && /Google|Samantha|Jenny|Aria|Microsoft/i.test(v.name))
+       || vs.find(v => /en[-_]US/i.test(v.lang))
+       || vs.find(v => /^en/i.test(v.lang)) || null;
+}
+if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+
+function utter(text, card) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US";
+  if (voice) u.voice = voice;
+  u.rate = $("slow").checked ? 0.7 : 0.95;
+  u.onstart = () => { document.querySelectorAll(".word.playing").forEach(c => c.classList.remove("playing")); if (card) card.classList.add("playing"); };
+  u.onend = () => { if (card) card.classList.remove("playing"); };
+  return u;
+}
+function speakWords(items) {
+  if (!synth) { msg("這台裝置的瀏覽器不支援朗讀，請改用 Chrome 或 Edge。"); return; }
+  synth.cancel();
+  const times = $("three").checked ? 3 : 1;
+  items.forEach(({ text, card }) => { for (let i = 0; i < times; i++) synth.speak(utter(text, card)); });
+}
+
+function render() {
+  const g = $("grid");
+  g.innerHTML = "";
+  DAYS[day].forEach(([en, zh], i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "word";
+    b.setAttribute("aria-label", `${en}，${zh}，點一下聽發音`);
+    b.innerHTML = `<span class="en">${en}</span><span class="zh">${zh}</span><span class="tip">點一下聽發音</span>`;
+    b.addEventListener("click", () => {
+      if ($("hideZh").checked) b.classList.add("revealed");
+      speakWords([{ text: en, card: b }]);
+    });
+    g.appendChild(b);
+  });
+  document.querySelectorAll(".tabs button").forEach(t => t.setAttribute("aria-pressed", String(+t.dataset.day === day)));
+}
+
+document.querySelectorAll(".tabs button").forEach(t => t.addEventListener("click", () => {
+  if (synth) synth.cancel();
+  day = +t.dataset.day; render(); msg("");
+}));
+$("playAll").addEventListener("click", () => {
+  const cards = [...document.querySelectorAll(".word")];
+  speakWords(cards.map((c, i) => ({ text: DAYS[day][i][0], card: c })));
+  msg("跟著唸，唸完一個字就停一下。");
+});
+$("stop").addEventListener("click", () => { if (synth) synth.cancel(); document.querySelectorAll(".word.playing").forEach(c => c.classList.remove("playing")); msg(""); });
+$("hideZh").addEventListener("change", e => {
+  document.body.classList.toggle("hide-zh", e.target.checked);
+  document.querySelectorAll(".word.revealed").forEach(c => c.classList.remove("revealed"));
+  msg(e.target.checked ? "中文已遮住：先說出意思，再點單字看答案。" : "");
+});
+
+function fromHash() {
+  const m = /^#day([123])$/.exec(location.hash);
+  day = m ? +m[1] - 1 : 0;
+  render();
+}
+window.addEventListener("hashchange", () => { if (synth) synth.cancel(); fromHash(); msg(""); });
+document.querySelectorAll(".tabs button").forEach(t => t.addEventListener("click", () => {
+  const h = "#day" + (+t.dataset.day + 1);
+  if (location.hash !== h) history.replaceState(null, "", h);
+}));
+
+if (!synth) msg("這台裝置的瀏覽器不支援朗讀，請改用 Chrome 或 Edge。");
+fromHash();
+</script>
+</body>
+</html>

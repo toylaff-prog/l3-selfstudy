@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>L3 自學小幫手｜Men and Women Can Do the Same Jobs, Can’t They?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #FAFAF8; --surface: #FFFFFF; --surface-2: #EEF4F3; --ink: #1E2A2D; --muted: #56656A; --line: #D5DEDC;
+  --teal: #1B6E6B; --teal-ink: #FFFFFF; --ok-bg: #DCEDEA; --orange: #B5531F; --no-bg: #FBE7DC; --hint: #E9B892;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #141B1C; --surface: #1C2526; --surface-2: #223031; --ink: #E8EEEC; --muted: #A9B8B6; --line: #34474A;
+    --teal: #5FB8B3; --teal-ink: #0F1B1C; --ok-bg: #1F3D3B; --orange: #F0A070; --no-bg: #4A2C1E; --hint: #8A5A36;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141B1C; --surface: #1C2526; --surface-2: #223031; --ink: #E8EEEC; --muted: #A9B8B6; --line: #34474A;
+  --teal: #5FB8B3; --teal-ink: #0F1B1C; --ok-bg: #1F3D3B; --orange: #F0A070; --no-bg: #4A2C1E; --hint: #8A5A36;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 64px); }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif; font-size: 18px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.top .in { max-width: 1040px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+.top a.home { font-weight: 700; color: var(--teal); text-decoration: none; font-size: 18px; }
+.top .crumb { color: var(--muted); font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+main { max-width: 1040px; margin: 0 auto; padding: 20px 20px 64px; }
+h1 { font-size: 30px; margin: 0 0 4px; line-height: 1.25; }
+h2 { font-size: 24px; margin: 0 0 12px; line-height: 1.3; }
+h3 { font-size: 20px; margin: 18px 0 8px; }
+p { margin: 0 0 12px; }
+.muted { color: var(--muted); }
+.badge { display: inline-block; font-size: 14px; font-weight: 700; color: var(--teal); border: 1.5px solid var(--teal); border-radius: 999px; padding: 1px 10px; margin-bottom: 6px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-top: 16px; }
+.pcard { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--ink); background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.pcard:hover { border-color: var(--teal); }
+.pcard strong { font-size: 19px; }
+.prog { height: 10px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.prog > span { display: block; height: 100%; background: var(--teal); }
+.box { background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 12px 0; }
+.box.tint { background: var(--surface-2); border-color: transparent; }
+.box.warn { border-color: var(--orange); }
+.steps { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 10px; margin: 12px 0 8px; }
+.steps button { flex: none; font: inherit; font-size: 16px; font-weight: 700; padding: 7px 14px; border-radius: 999px; border: 2px solid var(--teal); background: transparent; color: var(--teal); cursor: pointer; }
+.steps button[aria-current="step"] { background: var(--teal); color: var(--teal-ink); }
+.steps button.done::after { content: " ✓"; }
+.btn { font: inherit; font-size: 17px; font-weight: 700; padding: 9px 18px; border-radius: 10px; cursor: pointer; border: 2px solid var(--teal); background: transparent; color: var(--teal); }
+.btn.primary { background: var(--teal); color: var(--teal-ink); }
+.btn.small { font-size: 15px; padding: 4px 10px; border-width: 1.5px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+b.g { color: var(--orange); }
+b.v { color: var(--teal); }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 17px; }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+th { background: var(--surface-2); }
+.tablewrap { overflow-x: auto; }
+/* word cards */
+.wgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.word { font: inherit; text-align: left; cursor: pointer; background: var(--surface); color: var(--ink); border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+.word:hover { border-color: var(--teal); }
+.word .en { font-size: 24px; font-weight: 700; color: var(--teal); line-height: 1.2; }
+.word .pos { font-size: 14px; color: var(--muted); }
+.word .zh { font-size: 18px; }
+.word.playing { border-color: var(--orange); background: var(--no-bg); }
+.hidezh .word .zh, .hidezh .sent .zh { visibility: hidden; }
+.hidezh .word.rev .zh, .hidezh .sent.rev .zh { visibility: visible; }
+/* sentences */
+.sent { display: flex; gap: 10px; align-items: flex-start; border-bottom: 1px solid var(--line); padding: 10px 0; }
+.sent .body { flex: 1; cursor: pointer; }
+.sent .en { font-size: 20px; }
+.sent .zh { color: var(--muted); font-size: 17px; }
+.sent .who { font-weight: 700; color: var(--teal); }
+.sent .who.m { color: var(--orange); }
+.speak { flex: none; font: inherit; font-size: 14px; font-weight: 700; border: 1.5px solid var(--line); background: var(--surface); color: var(--teal); border-radius: 8px; padding: 3px 8px; cursor: pointer; }
+.chunk { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; align-items: start; }
+.hints div { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding: 4px 0; }
+.hints div span:first-child { font-weight: 700; color: var(--teal); }
+/* quiz */
+.q { background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
+.q .stem { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { font: inherit; text-align: left; font-size: 18px; padding: 10px 14px; border-radius: 10px; border: 2px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.opt:hover { border-color: var(--teal); }
+.opt.right { border-color: var(--teal); background: var(--ok-bg); }
+.opt.wrong { border-color: var(--orange); background: var(--no-bg); }
+.fb { margin-top: 8px; font-weight: 700; }
+.fb.ok { color: var(--teal); }
+.fb.no { color: var(--orange); }
+.fb .ex { display: block; font-weight: 400; color: var(--ink); margin-top: 4px; }
+.score { font-size: 20px; font-weight: 700; color: var(--teal); }
+input[type=text], textarea { font: inherit; font-size: 19px; padding: 8px 10px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); width: 100%; max-width: 420px; }
+textarea { max-width: 100%; min-height: 90px; }
+label.chk { display: flex; gap: 10px; align-items: center; font-size: 18px; padding: 6px 0; cursor: pointer; }
+label.chk input { width: 22px; height: 22px; accent-color: var(--teal); }
+/* matching */
+.mboard { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.mcol { display: flex; flex-direction: column; gap: 8px; }
+.mc { font: inherit; font-size: 17px; text-align: left; padding: 10px 12px; border-radius: 10px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.mc.sel { border-color: var(--teal); background: var(--surface-2); }
+.mc.ok { border-color: var(--teal); background: var(--ok-bg); cursor: default; }
+.mc.bad { border-color: var(--orange); background: var(--no-bg); }
+.mc.hint { border-style: dashed; border-color: var(--orange); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { background: var(--surface-2); border-radius: 8px; padding: 4px 10px; }
+@media (max-width: 720px) {
+  .chunk, .mboard { grid-template-columns: 1fr; }
+  h1 { font-size: 25px; }
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="in"><a class="home" href="#home">L3 自學小幫手</a><span class="crumb" id="crumb"></span></div></header>
+<main id="app"></main>
+
+<script>
+/* ========== storage ========== */
+const KEY = "l3-selfstudy-v1";
+let store = { done: {}, goals: {}, best: {}, write: {}, hw: {} };
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) store = Object.assign(store, s); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+function markDone(id) { if (!store.done[id]) { store.done[id] = true; save(); } refreshSteps(); }
+
+/* ========== speech ========== */
+const synth = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+let voice = null;
+function pickVoice() { if (!synth) return; const vs = synth.getVoices(); voice = vs.find(v => /en[-_]US/i.test(v.lang) && /Google|Samantha|Jenny|Aria|Microsoft/i.test(v.name)) || vs.find(v => /en[-_]US/i.test(v.lang)) || vs.find(v => /^en/i.test(v.lang)) || null; }
+if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+let warned = false;
+function noVoice() {
+  if (warned) return; warned = true;
+  const t = document.createElement("div");
+  t.setAttribute("role", "status");
+  t.style.cssText = "position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));max-width:520px;margin:0 auto;background:var(--surface);color:var(--ink);border:2px solid var(--orange);border-radius:12px;padding:12px 16px;z-index:20";
+  t.textContent = "這台裝置的瀏覽器不支援朗讀，請改用 Chrome 或 Edge。其他練習都可以照常使用。";
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 6000);
+}
+function plain(s) { return s.replace(/\*\*|\[\[|\]\]/g, "").replace(/<[^>]+>/g, ""); }
+function speak(text, el) {
+  if (!synth) { noVoice(); return; }
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(plain(text));
+  u.lang = "en-US"; if (voice) u.voice = voice; u.rate = 0.8;
+  if (el) { u.onstart = () => el.classList.add("playing"); u.onend = () => el.classList.remove("playing"); }
+  synth.speak(u);
+}
+/* **grammar** → orange, [[vocab]] → teal */
+function fmt(s) { return s.replace(/\*\*(.+?)\*\*/g, '<b class="g">$1</b>').replace(/\[\[(.+?)\]\]/g, '<b class="v">$1</b>'); }
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ========== data ========== */
+const VOCAB = {
+  "Reading 單字": [["form","v.","形成"],["childhood","n.","童年"],["relative","n.","親戚"],["expect","v.","期待；預計"],["public","adj. / n.","公共的；大眾"],["such as","片語","例如；像"],["everywhere","adv.","到處"],["company","n.","公司"],["equal","adj.","平等的"],["hard-working","adj.","勤勉的"],["lawyer","n.","律師"],["engineer","n.","工程師"],["president","n.","總統"],["model","n.","榜樣；模範"],["picture","v.","想像"]],
+  "Word Bank 單字": [["lovely","adj.","討人喜歡的；漂亮的"],["born","adj.","出生的；誕生的"],["present","n. / v.","禮物；展現"],["pretty","adj.","漂亮的"],["brave","adj.","勇敢的"]],
+  "Dialogue 單字": [["be filled with","片語","充滿"],["stupid","adj.","愚蠢的；笨的"],["honest","adj.","誠實的"],["spider","n.","蜘蛛"],["comic","n.","漫畫"],["mad","adj.","惱火的"],["totally","adv.","完全"],["understand / understood","v.","了解"],["hope","v. / n.","希望"],["allow","v.","允許"],["laugh at","片語","嘲笑"]]
+};
+const W2000 = {
+  "Day 1 職業": [["doctor","","醫生"],["nurse","","護理師"],["farmer","","農夫"],["driver","","司機"],["engineer","","工程師"],["scientist","","科學家"],["lawyer","","律師"],["reporter","","記者"],["soldier","","士兵"],["waiter","","服務生"]],
+  "Day 2 職業與人物": [["businessman","","商人"],["manager","","經理"],["worker","","工人"],["secretary","","祕書"],["clerk","","店員"],["police officer","","警察"],["artist","","藝術家"],["actor","","男演員"],["actress","","女演員"],["gentleman","","紳士"]],
+  "Day 3 個性形容詞": [["brave","","勇敢的"],["careful","","小心的"],["kind","","親切的"],["patient","","有耐心的"],["smart","","聰明的"],["friendly","","友善的"],["honest","","誠實的"],["hard-working","","努力的"],["gentle","","溫柔的"],["confident","","有自信的"]]
+};
+const PHRASES = [
+  ["such as","例如；像","public service jobs, **such as** doctors or policemen","公共服務的工作，像是醫生或警察"],
+  ["be filled with","充滿","The <i>Boys’ Life</i> cover **is filled with** robots.","《男孩的生活》封面充滿了機器人。"],
+  ["laugh at","嘲笑","I was afraid I would **be laughed at**.","我怕會被別人笑。（被動時 at 不能丟）"],
+  ["be known as","被稱為","Barbie **is known as** a hard-working toy.","芭比被稱為勤奮的玩具。"],
+  ["think of A as B","把 A 看作 B","You are thinking of the doctor **as** a man.","你把醫生想成男生。"],
+  ["role model","榜樣","She is a great **role model**.","她是很棒的榜樣。"],
+  ["on the other hand","另一方面","**On the other hand**, women are thought to be better at caring jobs.","另一方面，女生常被認為比較適合照顧的工作。"]
+];
+const READING = [
+  { label: "第 1 段", s: [
+    ["Picture this: a badly hurt woman **is taken** to a hospital.","想像一下：一位受了重傷的女人被送到醫院。"],
+    ["A doctor and a nurse are treating her.","一位醫生和一位護理師正在治療她。"],
+    ["You are thinking of the doctor as a man, **aren’t you?**","你心裡想的醫生是個男生，對吧？"],
+    ["If so, it’s possible that you might have a gender stereotype.","如果是，你可能有性別刻板印象。"]]},
+  { label: "第 2 段", s: [
+    ["Since we were little, we **have been taught** “There are jobs for women and jobs for men.”","從小我們就一直被教導：「有些工作是女生做的，有些工作是男生做的。」"],
+    ["Gender stereotypes about jobs **are formed** in childhood.","關於工作的性別刻板印象，是在童年時期形成的。"],
+    ["We learn these stereotypes from our parents, relatives, or the media.","我們從父母、親戚或媒體學到這些刻板印象。"],
+    ["Men **are** often **expected** to do public service jobs, such as doctors or policemen.","男生常被期待去做公共服務的工作，像是醫生或警察。"],
+    ["On the other hand, women **are thought** to be better at caring and teaching jobs, such as nurses or teachers.","另一方面，女生常被認為比較適合照顧和教學的工作，像是護理師或老師。"],
+    ["As you can see, gender stereotypes about jobs are everywhere.","你看，關於工作的性別刻板印象到處都是。"]]},
+  { label: "第 3 段", s: [
+    ["One toy company, Mattel, is trying to break gender stereotypes.","有一家玩具公司 Mattel（美泰兒）正努力打破性別刻板印象。"],
+    ["It has helped a lot to make the job market more equal over the years.","這些年來，它幫了很多忙，讓就業市場變得更平等。"],
+    ["Its Barbie doll **is known as** one of the most hard-working toys in the world.","它的芭比娃娃被稱為全世界最勤奮的玩具之一。"],
+    ["Since 1959, Barbie has had over 250 jobs, such as a doctor, a lawyer, an engineer, a singer, and even the president of the United States!","從 1959 年到現在，芭比已經做過超過 250 種工作，像是醫生、律師、工程師、歌手，甚至還當過美國總統！"],
+    ["Barbie has shown that women can do all types of jobs.","芭比讓大家看到，女生可以做各種工作。"],
+    ["She is a great role model, **isn’t she?**","她是很棒的榜樣，對吧？"]]},
+  { label: "第 4 段", s: [
+    ["Barbie shows children many different job choices.","芭比讓孩子看到很多不同的工作選擇。"],
+    ["From an early age, kids learn that their gender does not decide their future jobs.","孩子從小就學到：性別不能決定他們未來的工作。"]]}
+];
+const DIALOGUE = [
+  { title: "① 書店裡的兩本書", lines: [
+    ["Nick","Hey, Mindy, look at these book [[covers]].","嘿，Mindy，你看這些書的封面。"],
+    ["Nick","Why **is** the <i>Boys’ Life</i> one **filled with** airplanes, computers, and robots?","為什麼《男孩的生活》的封面全都是飛機、電腦和機器人？"],
+    ["Mindy","Right, and the <i>Girls’ Life</i> one shouldn’t be only about fashion and hair styles, **should it?**","對啊，而且《女孩的生活》的封面不應該只有時尚和髮型，對吧？"]],
+    hints: [["cover","封面"],["be filled with","充滿"],["fashion","時尚"],["hair style","髮型"],["one","指前面的 cover"]],
+    think: "男生的書和女生的書，封面各畫了什麼？", ans: "男生的：飛機、電腦、機器人；女生的：時尚、髮型。should it? 前面是 shouldn’t（否定），所以後面用肯定。" },
+  { title: "② Nick 的姊姊喜歡什麼？", lines: [
+    ["Nick","Yes, I think it’s [[stupid]].","對，我覺得這很蠢。"],
+    ["Nick","To be [[honest]], my [[sister]] loves robots, cars, and [[science]] [[toys]].","老實說，我姊姊很喜歡機器人、汽車和科學玩具。"],
+    ["Nick","Why should those only be for boys?","為什麼這些只能是男生的？"]],
+    hints: [["stupid","愚蠢的"],["to be honest","老實說"],["sister","姊妹"],["science toy","科學玩具"],["those","那些（指玩具）"]],
+    think: "Nick 的姊姊喜歡哪三樣東西？", ans: "robots（機器人）、cars（汽車）、science toys（科學玩具）。" },
+  { title: "③ Mindy 為什麼生氣？", lines: [
+    ["Mindy","I know! I wanted a Spider-Man [[comic]] book when I was little, but my [[cousin]] said, “That’s not for girls.” It made me so [[mad]]!","我懂！我小時候想要一本蜘蛛人漫畫，但我表哥說：「那不是給女生的。」這讓我超生氣的！"],
+    ["Nick","I [[totally]] [[understand]].","我完全了解。"]],
+    hints: [["comic book","漫畫書"],["cousin","表哥"],["make + 人 + mad","讓人生氣"],["totally","完全"],["understand","了解"]],
+    think: "表哥說了什麼話，讓 Mindy 很生氣？", ans: "表哥說蜘蛛人漫畫「That’s not for girls.」（那不是給女生的）。" },
+  { title: "④ Nick 為什麼沒買？", lines: [
+    ["Nick","I [[hoped]] to buy a toy cooking set once, but I didn’t.","我曾經想買一組玩具廚具，但後來沒買。"],
+    ["Nick","I was [[afraid]] I would **be laughed at** by others.","我怕會被別人笑。"],
+    ["Mindy","That’s not right. Everyone should **be allowed** to [[choose]] their own toys.","這樣不對。每個人都應該被允許選自己的玩具。"]],
+    hints: [["cooking set","廚具組"],["once","曾經"],["afraid","害怕的"],["be laughed at","被嘲笑"],["be allowed","被允許"]],
+    think: "Nick 想買什麼？為什麼最後沒買？", ans: "他想買玩具廚具組，但怕被別人笑（be laughed at）。這頁有 2 個被動語態：be laughed at、be allowed。" },
+  { title: "⑤ 玩具沒有性別", lines: [
+    ["Mindy","Toys don’t have a gender, **do they?**","玩具沒有性別，對吧？"],
+    ["Nick","Good point. If Barbie can be a doctor, a lawyer, or an engineer, then all kids should be free to play with all kinds of toys.","說得好。如果芭比可以當醫生、律師或工程師，那所有小孩都應該可以自由地玩各種玩具。"]],
+    hints: [["gender","性別"],["good point","說得好"],["be free to","可以自由地"],["all kinds of","各種的"]],
+    think: "do they? 為什麼用肯定？", ans: "前面是 don’t（否定），所以附加問句用肯定 do；Toys 換成 they。" },
+  { title: "⑥ 打破玩具的「規則」", lines: [
+    ["Mindy","Yeah, I heard some parents in the UK started a group Let Toys Be Toys.","是啊，我聽說英國有些家長成立了一個團體，叫 Let Toys Be Toys。"],
+    ["Mindy","It asked [[stores]] to stop using words like “toys for boys” or “toys for girls.”","這個團體請商店不要再用「男生的玩具」或「女生的玩具」這種字眼。"],
+    ["Nick","That’s a good [[idea]]! It’s time to break these toy “[[rules]],” **isn’t it?**","真是好主意！是時候打破這些玩具「規則」了，對吧？"]],
+    hints: [["the UK","英國"],["store","商店"],["stop + V-ing","停止做……"],["break","打破"],["rule","規則"]],
+    think: "It 指的是誰？「玩具規則」指什麼？", ans: "It 指 Let Toys Be Toys 這個團體；rules 指對玩具的性別刻板印象。" }
+];
+const BEN = [
+  ["Ben is a nurse.","Ben 是一位護理師。"],
+  ["He works at a big hospital in Taichung.","他在台中的一間大醫院工作。"],
+  ["When Ben was young, people often said to him, “Nurses are women, **aren’t they?**”","Ben 小時候，大家常對他說：「護理師都是女生，對吧？」"],
+  ["But Ben loved helping sick people, so he chose this job.","但是 Ben 很喜歡幫助生病的人，所以他選了這份工作。"],
+  ["Every day, many patients **are taken care of** by Ben.","每天都有很多病人被 Ben 照顧。"],
+  ["He is kind and careful.","他親切又細心。"],
+  ["Ben’s sister, Lily, is a pilot.","Ben 的姊姊 Lily 是一位飛行員。"],
+  ["She flies to Japan every week.","她每個星期都飛到日本。"],
+  ["Big planes **are flown** by women, too!","大飛機也是由女生駕駛的！"],
+  ["Ben and Lily think a job **should be chosen** because you like it and you are good at it.","Ben 和 Lily 認為，選工作應該看自己喜不喜歡、擅不擅長。"],
+  ["Boys and girls can do any job they like, **can’t they?**","男生女生都可以做自己喜歡的工作，對吧？"]
+];
+const Q = (q, options, answer, ex) => ({ q, options, answer, ex });
+const QUIZ = {
+  phrase: [
+    Q("I like sports, ＿＿＿＿ basketball.", ["such as","known as"], 0, "such as 例如：我喜歡運動，例如籃球。"),
+    Q("The box is ＿＿＿＿ toys.", ["filled with","laughed at"], 0, "be filled with 充滿：箱子裡裝滿了玩具。"),
+    Q("Don’t ＿＿＿＿ your brother.", ["laugh at","such as"], 0, "laugh at 嘲笑：不要嘲笑你弟弟。")],
+  tag: [
+    Q("Lily is a pilot, ＿＿＿＿?", ["isn’t she","doesn’t she"], 0, "前面 is（肯定）→ 後面 isn’t；Lily 換成 she。"),
+    Q("Toys don’t have a gender, ＿＿＿＿?", ["don’t they","do they"], 1, "前面 don’t（否定）→ 後面 do；Toys 換成 they。"),
+    Q("You can swim, ＿＿＿＿?", ["can you","can’t you"], 1, "前面 can（肯定）→ 後面 can’t。"),
+    Q("Your mom works at a hospital, ＿＿＿＿?", ["isn’t she","doesn’t she","does she"], 1, "works 是一般動詞現在式 → 用 doesn’t；your mom 換成 she。"),
+    Q("Amy fixed the car, ＿＿＿＿?", ["didn’t she","doesn’t she","wasn’t she"], 0, "fixed 是過去式 → 用 didn’t。")],
+  passSay: [
+    Q("Mom cooks dinner. → Dinner ＿＿＿ by Mom.", ["is cooked","are cooked","was cook"], 0, "dinner 是一個東西、現在式 → is；cook → cooked。"),
+    Q("Amy cleans the windows. → The windows ＿＿＿ by Amy.", ["is cleaned","are cleaned","are clean"], 1, "windows 是複數 → are；clean → cleaned。"),
+    Q("Ben made the cake. → The cake ＿＿＿ by Ben.", ["is made","was made","was make"], 1, "made 是過去式 → was；make → made。")],
+  pass: [
+    Q("The woman is ＿＿＿＿ to a hospital.", ["take","taken"], 1, "is 後面接過去分詞 taken：被送去。"),
+    Q("Stereotypes ＿＿＿＿ formed in childhood.", ["is","are"], 1, "stereotypes 是複數 → are。"),
+    Q("This job can ＿＿＿＿ by women.", ["do","be done"], 1, "助動詞 can 後面接 be ＋ p.p.。"),
+    Q("哪一句是對的？", ["The car fixed yesterday.","The car was fixed yesterday."], 1, "被動語態不能少 be 動詞。"),
+    Q("哪一句是對的？", ["The work will finished soon.","The work will be finished soon."], 1, "助動詞 will 後面要加 be。")],
+  sheet: [
+    Q("第 1 段主要在說什麼？", ["一位受傷的女人被送到醫院，我們可能以為醫生是男生","芭比做過很多種工作","英國家長成立了一個團體"], 0, "第 1 段用一個情境，讓你發現自己可能有性別刻板印象。"),
+    Q("第 2 段主要在說什麼？", ["女生不能當醫生","性別刻板印象從小就形成，而且到處都是","Mattel 是一家玩具公司"], 1, "are formed in childhood（童年形成）、are everywhere（到處都是）。"),
+    Q("第 3 段主要在說什麼？", ["芭比做過超過 250 種工作，讓大家看到女生可以做各種工作","男生比較適合當警察","芭比只是一個普通的玩具"], 0, "Barbie has shown that women can do all types of jobs."),
+    Q("第 4 段主要在說什麼？", ["小孩要照父母的意思選工作","性別不能決定未來的工作","芭比只能當醫生"], 1, "their gender does not decide their future jobs."),
+    Q("作者贊成性別刻板印象嗎？", ["贊成（agrees）","不贊成（doesn’t agree）"], 1, "線索：does not decide 不能決定。作者想打破刻板印象。")],
+  dlgCheck: [
+    Q("Mindy 為什麼生氣？", ["Nick 不同意她的想法","表哥說蜘蛛人漫畫不是給女生的","書店沒有蜘蛛人漫畫"], 1, "線索：my cousin said, “That’s not for girls.”"),
+    Q("Nick 為什麼沒買玩具廚具組？", ["錢不夠","怕被別人笑","不喜歡煮飯"], 1, "線索：I was afraid I would be laughed at by others."),
+    Q("Let Toys Be Toys 請商店做什麼？", ["不要再用「男生的玩具」「女生的玩具」這種字","多賣一點芭比娃娃","只賣男生的玩具"], 0, "線索：stop using words like “toys for boys” or “toys for girls.”"),
+    Q("Nick 最後說的 rules 指什麼？", ["做玩具的方法","對玩具的性別刻板印象","學校的規定"], 1, "整段對話都在說玩具不該分男生女生。")],
+  ben: [
+    Q("What is Ben’s job?", ["a pilot","a nurse","a teacher"], 1, "Ben is a nurse."),
+    Q("Who flies to Japan every week?", ["Ben","Ben’s mom","Lily"], 2, "She (Lily) flies to Japan every week."),
+    Q("Ben chose his job because his parents told him to.", ["True","False"], 1, "他選這份工作，是因為他喜歡幫助生病的人。"),
+    Q("下面哪一句是被動語態？", ["He is kind and careful.","Many patients are taken care of by Ben.","She flies to Japan every week."], 1, "are taken care of：be ＋ p.p.，病人「被」照顧。"),
+    Q("下面哪一個是附加問句？", ["aren’t they?","every week","too!"], 0, "Nurses are women, aren’t they?")],
+  p5a: [
+    Q("1. Your dad is a chef, ＿＿＿?", ["is he","isn’t he","doesn’t he"], 1, "前面 is（肯定）→ isn’t he。"),
+    Q("2. Women can be pilots, ＿＿＿?", ["can’t they","can they","aren’t they"], 0, "前面 can（肯定）→ can’t they。"),
+    Q("3. Mr. Lin teaches math, ＿＿＿?", ["isn’t he","don’t he","doesn’t he"], 2, "teaches 是一般動詞、單數 → doesn’t he。"),
+    Q("4. You didn’t clean the room, ＿＿＿?", ["did you","didn’t you","were you"], 0, "前面 didn’t（否定）→ did you。"),
+    Q("5. Amy and Ken will help us, ＿＿＿?", ["won’t they","will they","don’t they"], 0, "前面 will（肯定）→ won’t they。")],
+  p5b: [
+    Q("6. This car ＿＿＿ by my mom yesterday.", ["fixes","was fixed","is fix"], 1, "yesterday 過去式、單數 → was fixed。"),
+    Q("7. English ＿＿＿ in many countries.", ["is spoken","speaks","spoken"], 0, "英文「被」說 → is spoken。"),
+    Q("8. The dishes ＿＿＿ by my brother every night.", ["are washed","is washed","washed"], 0, "dishes 複數 → are washed。"),
+    Q("9. The work can ＿＿＿ by men and women.", ["do","done","be done"], 2, "can 後面接 be ＋ p.p.。"),
+    Q("10. These cakes ＿＿＿ by Mike last week.", ["are made","were made","made"], 1, "last week 過去式、複數 → were made。")],
+  p5c: [
+    Q("11. My sister cleans the room. → The room ＿＿＿ by my sister.", ["is cleaned","are cleaned","cleaned"], 0, "room 單數、現在式 → is cleaned。"),
+    Q("12. Tom wrote the letter. → The letter ＿＿＿ by Tom.", ["was wrote","was written","is written"], 1, "wrote 是過去式 → was；write → written。"),
+    Q("13. Girls can play this game. → This game ＿＿＿ by girls.", ["can played","can be played","can be play"], 1, "can ＋ be ＋ p.p.。"),
+    Q("14. Kevin is a firefighter, ＿＿＿?", ["isn’t he","doesn’t he","is he"], 0, "前面 is（肯定）→ isn’t he。"),
+    Q("15. They don’t like the job, ＿＿＿?", ["don’t they","do they","are they"], 1, "前面 don’t（否定）→ do they。"),
+    Q("16. Your mom works at night, ＿＿＿?", ["doesn’t she","isn’t she","does she"], 0, "works 一般動詞、單數 → doesn’t she。")],
+  w1: [
+    ...[["farmer","農夫"],["lawyer","律師"],["soldier","士兵"],["reporter","記者"],["scientist","科學家"]].map(([w, z]) => Q(`${w} 是什麼意思？`, ["記者","農夫","科學家","律師","士兵"], ["記者","農夫","科學家","律師","士兵"].indexOf(z), `${w} ＝ ${z}`)),
+    ...[["clerk","店員"],["secretary","祕書"],["businessman","商人"],["actress","女演員"],["worker","工人"]].map(([w, z]) => Q(`${w} 是什麼意思？`, ["女演員","店員","工人","商人","祕書"], ["女演員","店員","工人","商人","祕書"].indexOf(z), `${w} ＝ ${z}`))],
+  w3: [
+    Q("A nurse should be ＿＿＿ with sick people.（有耐心的）", ["patient","careful","brave","friendly","honest","smart"], 0, "patient 有耐心的"),
+    Q("A soldier must be ＿＿＿.（勇敢的）", ["patient","careful","brave","friendly","honest","smart"], 2, "brave 勇敢的"),
+    Q("A driver should be ＿＿＿ on the road.（小心的）", ["patient","careful","brave","friendly","honest","smart"], 1, "careful 小心的"),
+    Q("A clerk should be ＿＿＿ to customers.（友善的）", ["patient","careful","brave","friendly","honest","smart"], 3, "friendly 友善的"),
+    Q("A lawyer must be ＿＿＿ and tell the truth.（誠實的）", ["patient","careful","brave","friendly","honest","smart"], 4, "honest 誠實的"),
+    Q("A scientist is usually ＿＿＿.（聰明的）", ["patient","careful","brave","friendly","honest","smart"], 5, "smart 聰明的")],
+  w4: [
+    Q("speak 的過去分詞是？", ["spoke","spoken","speaked"], 1, "speak – spoke – spoken"),
+    Q("break 的過去式是？", ["broke","broken","breaked"], 0, "break – broke – broken"),
+    Q("eat 的過去分詞是？", ["ate","eaten","eated"], 1, "eat – ate – eaten"),
+    Q("know 的過去式是？", ["knew","known","knowed"], 0, "know – knew – known"),
+    Q("sell 的過去分詞是？", ["sold","selled","sell"], 0, "sell – sold – sold"),
+    Q("send 的過去分詞是？", ["sended","sent","send"], 1, "send – sent – sent"),
+    Q("forget 的過去分詞是？", ["forgot","forgotten","forgetted"], 1, "forget – forgot – forgotten"),
+    Q("grow 的過去式是？", ["grew","grown","growed"], 0, "grow – grew – grown"),
+    Q("25. Rice is ＿＿＿ by farmers in Taiwan.", ["grew","grown","grow"], 1, "is ＋ 過去分詞 grown。"),
+    Q("26. The window was ＿＿＿ by the kids yesterday.", ["broke","broken","break"], 1, "was ＋ 過去分詞 broken。")]
+};
+const SPELL = [["醫生","doctor"],["司機","driver"],["工程師","engineer"],["服務生","waiter"],["經理","manager"],["藝術家","artist"],["勇敢的","brave"],["誠實的","honest"]];
+
+/* ========== explanation pages ========== */
+const HTML = {
+  tag: `
+<div class="box tint"><p><b>附加問句</b>加在句子後面，用來確認事情或請對方同意，意思是「……，對吧？」</p></div>
+<h3>三步驟</h3>
+<ol><li><b>前肯後否、前否後肯</b>：前面肯定，後面就用否定；前面否定，後面用肯定。</li>
+<li><b>找動詞</b>：有 be 動詞或助動詞就照抄；一般動詞改用 do / does / did。</li>
+<li><b>換主詞</b>：主詞改成代名詞（Tom → he、my parents → they、this → it）。</li></ol>
+<div class="tablewrap"><table><tr><th>前句的動詞</th><th>附加問句</th><th>例句</th></tr>
+<tr><td>be 動詞</td><td>isn’t / aren’t / wasn’t</td><td>Tom is a nurse, <b class="g">isn’t he</b>?</td></tr>
+<tr><td>助動詞 can / will</td><td>can’t / won’t</td><td>Men and women can do the same jobs, <b class="g">can’t they</b>?</td></tr>
+<tr><td>一般動詞（現在）</td><td>don’t / doesn’t</td><td>Your mom works at a hospital, <b class="g">doesn’t she</b>?</td></tr>
+<tr><td>一般動詞（過去）</td><td>didn’t</td><td>Amy fixed the car, <b class="g">didn’t she</b>?</td></tr>
+<tr><td>現在完成式</td><td>haven’t / hasn’t</td><td>You have finished the work, <b class="g">haven’t you</b>?</td></tr>
+<tr><td>否定句</td><td>改成肯定</td><td>She isn’t a pilot, <b class="g">is she</b>?</td></tr></table></div>
+<div class="box warn"><p><b>易錯提醒</b>：否定的附加問句一定要縮寫（isn’t he，不寫 is not he）。回答看「事實」：會就 Yes，不會就 No。<br>A: You can’t cook, can you?　B: No, I can’t.（對，我不會。）</p></div>
+<h3>課本裡的附加問句</h3>
+<p>You are thinking of the doctor as a man, <b class="g">aren’t you?</b>（課文第 1 段）<br>She is a great role model, <b class="g">isn’t she?</b>（課文第 3 段）<br>Toys don’t have a gender, <b class="g">do they?</b>（對話）</p>`,
+  pass: `
+<div class="box tint"><p><b>公式</b>：主詞 ＋ <b class="g">be 動詞</b> ＋ <b class="g">過去分詞（p.p.）</b> ＋（by ＋ 做動作的人）<br>主詞是「被做」的人或東西。</p></div>
+<h3>① 誰做動作？誰被做？</h3>
+<p>That man saved my child.　那個男人救了我的孩子。（主動）<br>→ My child <b class="g">was saved</b> by that man.　我的孩子被那個男人救了。（被動）</p>
+<h3>② 主動變被動三步驟</h3>
+<ol><li>受詞搬到最前面當主詞：Women can do this job. → <b>This job</b> …</li>
+<li>動詞改成 be ＋ p.p.（時態不變）：→ This job <b class="g">can be done</b> …</li>
+<li>原本的主詞放到 by 後面（用受格）：→ This job can be done <b>by women</b>.</li></ol>
+<h3>③ be 動詞看主詞和時態</h3>
+<div class="tablewrap"><table><tr><th></th><th>單數主詞</th><th>複數主詞</th></tr>
+<tr><td>現在</td><td>English <b class="g">is</b> spoken around the world.</td><td>The lawyers <b class="g">are</b> paid once a month.</td></tr>
+<tr><td>過去</td><td>The dog <b class="g">was</b> found by a student.</td><td>The cars <b class="g">weren’t</b> fixed by Mike.</td></tr></table></div>
+<h3>④ 助動詞後面加 be</h3>
+<p>This job <b class="g">can be done</b> by women.<br>The work <b class="g">will be finished</b> by Maggie.</p>
+<h3>⑤ 常考的不規則過去分詞</h3>
+<div class="chips"><span class="chip">do → done</span><span class="chip">make → made</span><span class="chip">take → taken</span><span class="chip">give → given</span><span class="chip">write → written</span><span class="chip">see → seen</span><span class="chip">choose → chosen</span><span class="chip">build → built</span><span class="chip">teach → taught</span></div>
+<div class="box warn"><p><b>易錯提醒</b>：be 動詞不能漏（The car <b>was</b> fixed）；be 動詞跟著主詞變（The dishes <b>are</b> washed）；by 後面用受格（by <b>him</b>、by <b>them</b>）。</p></div>
+<h3>課本裡的被動語態</h3>
+<div class="chips"><span class="chip"><b class="g">is taken</b> 被送去</span><span class="chip"><b class="g">are formed</b> 被形成</span><span class="chip"><b class="g">are expected</b> 被期待</span><span class="chip"><b class="g">are thought</b> 被認為</span><span class="chip"><b class="g">is known as</b> 被稱為</span><span class="chip"><b class="g">be laughed at</b> 被嘲笑</span><span class="chip"><b class="g">be allowed</b> 被允許</span></div>`
+};
+
+/* ========== structure ========== */
+const PARTS = [
+  { id: "p1", lesson: "第 1 堂", title: "Part 1　這一課要學什麼？", page: "講義 p.1", steps: [
+    { id: "p1-goals", name: "學習目標", type: "goals" },
+    { id: "p1-warm", name: "暖身", type: "warm" }]},
+  { id: "p2", lesson: "第 1 堂", title: "Part 2　重點單字與片語", page: "講義 p.2–3", steps: [
+    { id: "p2-cards", name: "單字卡", type: "cards", data: VOCAB },
+    { id: "p2-quiz", name: "單字小測驗", type: "vocabquiz", pool: VOCAB },
+    { id: "p2-phrase", name: "片語", type: "phrases" },
+    { id: "p2-phquiz", name: "片語練習", type: "quiz", items: QUIZ.phrase }]},
+  { id: "p3", lesson: "第 2 堂", title: "Part 3　文法句型", page: "講義 p.4–6", steps: [
+    { id: "p3-tag", name: "附加問句說明", type: "html", html: HTML.tag },
+    { id: "p3-tagq", name: "附加問句練習", type: "quiz", items: QUIZ.tag },
+    { id: "p3-pass", name: "被動語態說明", type: "html", html: HTML.pass },
+    { id: "p3-say", name: "主動變被動", type: "quiz", items: QUIZ.passSay, intro: "字框：is ／ are ／ was　cooked ／ cleaned ／ made" },
+    { id: "p3-passq", name: "被動語態練習", type: "quiz", items: QUIZ.pass }]},
+  { id: "p4", lesson: "第 3 堂", title: "Part 4　閱讀理解", page: "講義 p.7–11", steps: [
+    { id: "p4-read", name: "課文", type: "reading" },
+    { id: "p4-sheet", name: "課文學習單", type: "quiz", items: QUIZ.sheet },
+    { id: "p4-dlg", name: "對話", type: "dialogue" },
+    { id: "p4-dlgq", name: "對話重點", type: "quiz", items: QUIZ.dlgCheck },
+    { id: "p4-match", name: "句子配對", type: "match" },
+    { id: "p4-ben", name: "短文 Ben’s Job", type: "ben" }]},
+  { id: "p5", lesson: "第 3 堂", title: "Part 5　練習題", page: "講義 p.12–13", steps: [
+    { id: "p5-a", name: "A 附加問句", type: "quiz", items: QUIZ.p5a },
+    { id: "p5-b", name: "B 被動語態", type: "quiz", items: QUIZ.p5b },
+    { id: "p5-c", name: "C 進階", type: "quiz", items: QUIZ.p5c },
+    { id: "p5-d", name: "D 寫寫看", type: "write" }]},
+  { id: "p6", lesson: "第 4 堂", title: "Part 6　2000 單字練習", page: "講義 p.14–17", steps: [
+    { id: "p6-cards", name: "單字卡", type: "cards", data: W2000 },
+    { id: "p6-w1", name: "練習一 配對", type: "quiz", items: QUIZ.w1 },
+    { id: "p6-w2", name: "練習二 拼字", type: "spell" },
+    { id: "p6-w3", name: "練習三 個性", type: "quiz", items: QUIZ.w3 },
+    { id: "p6-w4", name: "練習四 三態", type: "quiz", items: QUIZ.w4 }]}
+];
+const HW = [
+  { id: "hw1", t: "作業一：單字（第 1 堂後）", p: "講義 p.18", items: ["看中文，補字母（6 題）","片語填空（3 題）","寫出中文：本課單字（5 題）","Part 2 單字表每個字寫三遍，唸給家人聽"] },
+  { id: "hw2", t: "作業二：附加問句（第 2 堂後）", p: "講義 p.19", items: ["圈出正確的附加問句（5 題）","寫出附加問句（3 題）","寫出中文：本課單字（5 題）","生活小任務：用附加問句問家人"] },
+  { id: "hw3", t: "作業三：被動語態（第 3 堂後）", p: "講義 p.20", items: ["圈出正確答案（4 題）","改成被動語態（3 題）","寫出過去分詞（4 題）","寫出中文：本課單字（5 題）"] },
+  { id: "hw4", t: "作業四：閱讀、寫作與 2000 單字（第 4 堂後）", p: "講義 p.21–22", items: ["閱讀短文 Mia’s Dream（4 題）","我的夢想工作（4 句）","2000 單字寫中文（8 題）","Part 6 字表每個字寫三遍"] }
+];
+
+/* ========== rendering ========== */
+const app = document.getElementById("app");
+let cur = { part: null, step: 0 };
+const partPct = p => Math.round(100 * p.steps.filter(s => store.done[s.id]).length / p.steps.length);
+
+function route() {
+  if (synth) synth.cancel();
+  const h = location.hash.replace("#", "") || "home";
+  const p = PARTS.find(x => x.id === h);
+  if (p) { cur = { part: p, step: Math.max(0, p.steps.findIndex(s => !store.done[s.id])) }; renderPart(); }
+  else if (h === "hw") renderHW();
+  else renderHome();
+  window.scrollTo(0, 0);
+}
+function renderHome() {
+  document.getElementById("crumb").textContent = "";
+  const total = PARTS.reduce((a, p) => a + p.steps.length, 0), done = PARTS.reduce((a, p) => a + p.steps.filter(s => store.done[s.id]).length, 0);
+  app.innerHTML = `
+    <span class="badge">英語 Lesson 3 自學</span>
+    <h1>Men and Women Can Do the Same Jobs, Can’t They?</h1>
+    <p class="muted">男生、女生都能做一樣的工作。順序和講義一樣，一個 Part 一個 Part 往下做；做完的會打勾，下次打開會記得。</p>
+    <div class="box tint"><div class="row" style="justify-content:space-between"><b>我的進度</b><span>${done}／${total} 個活動</span></div><div class="prog" style="margin-top:8px"><span style="width:${Math.round(100 * done / total)}%"></span></div></div>
+    <div class="cards">${PARTS.map(p => `
+      <a class="pcard" href="#${p.id}"><span class="badge">${p.lesson}</span><strong>${p.title}</strong><span class="muted">${p.steps.map(s => s.name).join("・")}</span><div class="prog"><span style="width:${partPct(p)}%"></span></div></a>`).join("")}
+      <a class="pcard" href="#hw"><span class="badge">每堂課後</span><strong>回家作業</strong><span class="muted">作業一～四，寫在講義上</span><div class="prog"><span style="width:${Math.round(100 * HW.filter(h => store.hw[h.id]).length / HW.length)}%"></span></div></a>
+    </div>
+    <p class="muted" style="margin-top:20px">小提醒：有「聽一聽」的地方會唸英文，請打開喇叭；建議用 Chrome 或 Edge。</p>`;
+}
+function renderHW() {
+  document.getElementById("crumb").textContent = "回家作業";
+  app.innerHTML = `<span class="badge">每堂課後</span><h1>回家作業</h1><p class="muted">作業寫在紙本講義上。每份作業只練已經教過的內容，寫完就在這裡打勾。</p>` +
+    HW.map(h => `<div class="box"><h2>${h.t}</h2><p class="muted">${h.p}</p><ol>${h.items.map(i => `<li>${i}</li>`).join("")}</ol>
+      <label class="chk"><input type="checkbox" data-hw="${h.id}" ${store.hw[h.id] ? "checked" : ""}> 我寫完了</label></div>`).join("");
+  app.querySelectorAll("[data-hw]").forEach(c => c.addEventListener("change", () => { store.hw[c.dataset.hw] = c.checked; save(); }));
+}
+function renderPart() {
+  const p = cur.part, s = p.steps[cur.step];
+  document.getElementById("crumb").textContent = `${p.lesson}・${p.title.replace("　", " ")}`;
+  app.innerHTML = `<span class="badge">${p.lesson}</span><h1>${p.title}</h1><p class="muted">${p.page}</p>
+    <nav class="steps" aria-label="這個 Part 的活動">${p.steps.map((x, i) => `<button type="button" data-i="${i}" class="${store.done[x.id] ? "done" : ""}" ${i === cur.step ? 'aria-current="step"' : ""}>${i + 1}. ${x.name}</button>`).join("")}</nav>
+    <section id="stage"></section>
+    <div class="nav"><button type="button" class="btn" id="prev">← 上一個</button><button type="button" class="btn primary" id="next">下一個 →</button></div>`;
+  app.querySelectorAll(".steps button").forEach(b => b.addEventListener("click", () => { cur.step = +b.dataset.i; renderPart(); }));
+  const pi = PARTS.indexOf(p);
+  const prev = document.getElementById("prev"), next = document.getElementById("next");
+  prev.disabled = cur.step === 0 && pi === 0;
+  prev.addEventListener("click", () => { if (cur.step > 0) { cur.step--; renderPart(); } else if (pi > 0) location.hash = PARTS[pi - 1].id; });
+  if (cur.step === p.steps.length - 1) next.textContent = pi < PARTS.length - 1 ? `下一個 Part →` : "看回家作業 →";
+  next.addEventListener("click", () => { if (cur.step < p.steps.length - 1) { cur.step++; renderPart(); window.scrollTo(0, 0); } else location.hash = pi < PARTS.length - 1 ? PARTS[pi + 1].id : "hw"; });
+  const stage = document.getElementById("stage");
+  (RENDER[s.type] || (() => {}))(stage, s);
+}
+function refreshSteps() {
+  if (!cur.part) return;
+  app.querySelectorAll(".steps button").forEach(b => { const st = cur.part.steps[+b.dataset.i]; if (st && store.done[st.id]) b.classList.add("done"); });
+}
+function doneButton(s, label) {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "btn"; b.style.marginTop = "14px";
+  b.textContent = store.done[s.id] ? "已完成 ✓" : (label || "我完成了");
+  b.addEventListener("click", () => { markDone(s.id); b.textContent = "已完成 ✓"; });
+  return b;
+}
+
+/* quiz engine: wrong answers can retry; score = first-try correct */
+function renderQuiz(stage, s, items, onFinish) {
+  let answered = 0, firstRight = 0;
+  const wrap = document.createElement("div");
+  if (s.intro) wrap.innerHTML = `<div class="box tint"><p>${s.intro}</p></div>`;
+  wrap.insertAdjacentHTML("beforeend", `<p class="muted">選一個答案；答錯可以再選一次。</p>`);
+  items.forEach((it, qi) => {
+    const q = document.createElement("div"); q.className = "q";
+    q.innerHTML = `<div class="stem">${fmt(it.q)}</div><div class="opts"></div><div class="fb" role="status" aria-live="polite"></div>`;
+    const opts = q.querySelector(".opts"), fb = q.querySelector(".fb");
+    let tries = 0, solved = false;
+    it.options.forEach((o, oi) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "opt";
+      b.innerHTML = `(${String.fromCharCode(65 + oi)}) ${fmt(o)}`;
+      b.addEventListener("click", () => {
+        if (solved) return;
+        tries++;
+        if (oi === it.answer) {
+          solved = true; b.classList.add("right"); answered++; if (tries === 1) firstRight++;
+          fb.className = "fb ok"; fb.innerHTML = `答對了！<span class="ex">${fmt(it.ex)}</span>`;
+          if (answered === items.length) finish();
+        } else { b.classList.add("wrong"); fb.className = "fb no"; fb.textContent = "再想想看，換一個答案試試。"; }
+      });
+      opts.appendChild(b);
+    });
+    wrap.appendChild(q);
+  });
+  const end = document.createElement("div");
+  wrap.appendChild(end);
+  stage.appendChild(wrap);
+  function finish() {
+    const best = Math.max(store.best[s.id] || 0, firstRight); store.best[s.id] = best; save();
+    end.innerHTML = `<div class="box"><p class="score">全部完成！第一次就答對 ${firstRight}／${items.length} 題</p><p class="muted">最佳紀錄：${best}／${items.length}。${firstRight === items.length ? "全對，太厲害了！" : "錯的題目再看一次說明，下次會更好。"}</p></div>`;
+    const again = document.createElement("button"); again.type = "button"; again.className = "btn"; again.textContent = "再做一次";
+    again.addEventListener("click", () => { stage.innerHTML = ""; (onFinish ? onFinish.restart : () => RENDER[s.type](stage, s))(); });
+    end.firstChild.appendChild(again);
+    markDone(s.id);
+    end.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+}
+
+function wordCards(container, list, hide) {
+  const g = document.createElement("div"); g.className = "wgrid" + (hide ? "" : "");
+  list.forEach(([en, pos, zh]) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "word";
+    b.setAttribute("aria-label", `${en}，${zh}，點一下聽發音`);
+    b.innerHTML = `<span class="en">${en}</span>${pos ? `<span class="pos">${pos}</span>` : ""}<span class="zh">${zh}</span>`;
+    b.addEventListener("click", () => { b.classList.add("rev"); speak(en.replace(" / ", ", "), b); });
+    g.appendChild(b);
+  });
+  container.appendChild(g);
+}
+function hideToggle(stage, target, label) {
+  const l = document.createElement("label"); l.className = "chk";
+  l.innerHTML = `<input type="checkbox"> ${label || "遮住中文（考自己，點一下看答案）"}`;
+  l.querySelector("input").addEventListener("change", e => { target.classList.toggle("hidezh", e.target.checked); target.querySelectorAll(".rev").forEach(x => x.classList.remove("rev")); });
+  stage.appendChild(l);
+}
+function sentence(container, en, zh, who) {
+  const d = document.createElement("div"); d.className = "sent";
+  d.innerHTML = `<div class="body"><div class="en">${who ? `<span class="who${who === "Mindy" ? " m" : ""}">${who}：</span>` : ""}${fmt(en)}</div><div class="zh">${zh}</div></div>`;
+  const sp = document.createElement("button"); sp.type = "button"; sp.className = "speak"; sp.textContent = "聽一聽";
+  sp.setAttribute("aria-label", "朗讀這句英文");
+  sp.addEventListener("click", () => speak(en));
+  d.querySelector(".body").addEventListener("click", () => d.classList.add("rev"));
+  d.appendChild(sp);
+  container.appendChild(d);
+}
+
+const RENDER = {
+  goals(stage, s) {
+    const goals = ["認讀、拼寫本課單字", "用英文說出「男生女生都能做這份工作」", "用附加問句確認事情（……，對吧？）", "看懂並寫出被動語態句子（be ＋ p.p.）"];
+    stage.innerHTML = `<div class="box tint"><p>這一課的主題是「<b>工作沒有性別之分</b>」：男生女生都可以做自己喜歡的工作。我們會學兩個文法：附加問句和被動語態。</p></div><h2>學完這課，我可以：</h2><p class="muted">學會了就打勾，最後再回來檢查。</p>`;
+    goals.forEach((g, i) => {
+      const l = document.createElement("label"); l.className = "chk";
+      l.innerHTML = `<input type="checkbox" ${store.goals[i] ? "checked" : ""}> ${g}`;
+      l.querySelector("input").addEventListener("change", e => { store.goals[i] = e.target.checked; save(); });
+      stage.appendChild(l);
+    });
+    stage.appendChild(doneButton(s, "我看完了"));
+  },
+  warm(stage, s) {
+    const data = [["高中老師","high school teachers",31.1,68.9],["警察","police officers",86.73,13.27],["醫生","doctors",78.8,21.2],["護理師","nurses",4.6,95.4]];
+    stage.innerHTML = `<h2>臺灣的這些工作，男生女生各占多少？</h2><p class="muted">資料：課本 p.45 Jobs in Taiwan</p>
+      <div class="tablewrap"><table><tr><th>工作</th><th>男生</th><th>女生</th></tr>${data.map(d => `<tr><td><b>${d[0]}</b> <span class="muted">${d[1]}</span></td><td>${d[2]}%</td><td>${d[3]}%</td></tr>`).join("")}</table></div>
+      <h2>這些工作誰可以做？</h2>`;
+    const jobs = [["nurse","護理師"],["pilot","飛行員"],["firefighter","消防員"],["chef","廚師"],["engineer","工程師"],["kindergarten teacher","幼兒園老師"]];
+    jobs.forEach(([en, zh]) => {
+      const q = document.createElement("div"); q.className = "q";
+      q.innerHTML = `<div class="stem">${en}　${zh}</div><div class="row"></div><div class="fb"></div>`;
+      ["男生","女生","都可以"].forEach(c => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "opt"; b.textContent = c;
+        b.addEventListener("click", () => {
+          q.querySelectorAll(".opt").forEach(x => x.classList.remove("right", "wrong"));
+          b.classList.add(c === "都可以" ? "right" : "wrong");
+          const fb = q.querySelector(".fb");
+          fb.className = "fb " + (c === "都可以" ? "ok" : "no");
+          fb.textContent = c === "都可以" ? "沒錯！男生女生都可以做這份工作。" : `其實男生女生都可以當${zh}喔！`;
+        });
+        q.querySelector(".row").appendChild(b);
+      });
+      stage.appendChild(q);
+    });
+    stage.appendChild(doneButton(s, "我做完了"));
+  },
+  cards(stage, s) {
+    stage.innerHTML = `<p>點一下單字就會唸出來。先跟著唸，再把講義上每個字<b>寫三遍</b>。</p>`;
+    const box = document.createElement("div");
+    hideToggle(stage, box);
+    Object.entries(s.data).forEach(([name, list]) => { box.insertAdjacentHTML("beforeend", `<h3>${name}（${list.length} 個）</h3>`); wordCards(box, list); });
+    stage.appendChild(box);
+    stage.appendChild(doneButton(s, "我都唸過了"));
+  },
+  vocabquiz(stage, s) {
+    const pool = Object.values(s.pool).flat();
+    const picks = shuffle(pool).slice(0, 10);
+    const items = picks.map(([en, , zh]) => {
+      const others = shuffle(pool.filter(x => x[2] !== zh)).slice(0, 3).map(x => x[2]);
+      const opts = shuffle([zh, ...others]);
+      return Q(`<b class="v">${en}</b> 是什麼意思？`, opts, opts.indexOf(zh), `${en} ＝ ${zh}`);
+    });
+    stage.innerHTML = `<p>每次隨機抽 10 個單字。按「聽一聽」可以先聽發音。</p>`;
+    renderQuiz(stage, s, items);
+    stage.querySelectorAll(".q").forEach((q, i) => {
+      const sp = document.createElement("button"); sp.type = "button"; sp.className = "speak"; sp.textContent = "聽一聽"; sp.style.marginBottom = "8px";
+      sp.addEventListener("click", () => speak(picks[i][0].replace(" / ", ", ")));
+      q.insertBefore(sp, q.querySelector(".opts"));
+    });
+  },
+  phrases(stage, s) {
+    stage.innerHTML = `<p>前三個是單字表裡的片語，後四個是課文裡的好用片語。</p>`;
+    PHRASES.forEach(([ph, zh, en, ez]) => {
+      const b = document.createElement("div"); b.className = "box";
+      b.innerHTML = `<div class="row" style="justify-content:space-between"><h2 style="margin:0;color:var(--teal)">${ph}</h2><b>${zh}</b></div>`;
+      sentence(b, en, ez);
+      stage.appendChild(b);
+    });
+    stage.appendChild(doneButton(s, "我看完了"));
+  },
+  html(stage, s) { stage.innerHTML = s.html; stage.appendChild(doneButton(s, "我看懂了")); },
+  quiz(stage, s) { renderQuiz(stage, s, s.items); },
+  reading(stage, s) {
+    stage.innerHTML = `<h2>Gender Stereotypes About Jobs</h2><p>點「聽一聽」聽英文，橘色粗體是文法（被動語態、附加問句）。可以遮住中文考自己，點句子看答案。</p>`;
+    const box = document.createElement("div");
+    hideToggle(stage, box, "遮住中文（點句子看答案）");
+    READING.forEach(p => { box.insertAdjacentHTML("beforeend", `<h3>${p.label}</h3>`); p.s.forEach(([en, zh]) => sentence(box, en, zh)); });
+    stage.appendChild(box);
+    stage.insertAdjacentHTML("beforeend", `<div class="box tint"><p><b>作者的態度</b>：不贊同性別刻板印象。線索在最後一句：gender does not decide their future jobs。</p></div>`);
+    stage.appendChild(doneButton(s, "我讀完了"));
+  },
+  dialogue(stage, s) {
+    stage.innerHTML = `<p>Nick 和 Mindy 在書店裡聊天。藍綠色是單字，橘色是文法。先讀右邊的單字提示，再讀對話。</p>`;
+    DIALOGUE.forEach(c => {
+      const b = document.createElement("div"); b.className = "box";
+      b.innerHTML = `<h2>${c.title}</h2><div class="chunk"><div class="lines"></div><div><div class="box tint hints"><b>單字提示</b>${c.hints.map(h => `<div><span>${h[0]}</span><span>${h[1]}</span></div>`).join("")}</div>
+        <div class="box warn"><b>想一想</b><p style="margin:6px 0">${c.think}</p><button type="button" class="btn small">看答案</button><p class="ans" hidden style="margin-top:8px">${c.ans}</p></div></div></div>`;
+      c.lines.forEach(([who, en, zh]) => sentence(b.querySelector(".lines"), en, zh, who));
+      const btn = b.querySelector(".btn.small"), ans = b.querySelector(".ans");
+      btn.addEventListener("click", () => { ans.hidden = !ans.hidden; btn.textContent = ans.hidden ? "看答案" : "收起答案"; });
+      stage.appendChild(b);
+    });
+    stage.appendChild(doneButton(s, "我讀完了"));
+  },
+  match(stage, s) {
+    const rounds = [];
+    READING.forEach(p => { for (let i = 0; i < p.s.length; i += 4) rounds.push({ label: "課文" + p.label, pairs: p.s.slice(i, i + 4).map(x => [x[0], x[1]]) }); });
+    const lines = DIALOGUE.flatMap(c => c.lines);
+    for (let i = 0; i < lines.length; i += 4) rounds.push({ label: `對話（第 ${i / 4 + 1} 組）`, pairs: lines.slice(i, i + 4).map(x => [x[1], x[2]]) });
+    let r = 0;
+    function play() {
+      const R = rounds[r], n = R.pairs.length;
+      const order = n > 1 ? (() => { let o; do { o = shuffle([...Array(n).keys()]); } while (o.every((v, i) => v === i)); return o; })() : [0];
+      let selE = null, selZ = null, ok = new Set(), mist = 0;
+      stage.innerHTML = `<p>先點一句英文，再點意思一樣的中文。第 ${r + 1}／${rounds.length} 組：<b>${R.label}</b></p><div class="prog" style="margin-bottom:12px"><span style="width:${Math.round(100 * r / rounds.length)}%"></span></div>
+        <div class="mboard"><div class="mcol" id="mE"></div><div class="mcol" id="mZ"></div></div><div class="fb" id="mFb" role="status" aria-live="polite"></div>
+        <div class="row" style="margin-top:10px"><button type="button" class="btn small" id="mHint">提示</button><button type="button" class="btn small" id="mSkip">跳到下一組</button></div><div id="mEnd"></div>`;
+      const E = stage.querySelector("#mE"), Z = stage.querySelector("#mZ"), FB = stage.querySelector("#mFb");
+      function draw() {
+        E.innerHTML = ""; Z.innerHTML = "";
+        R.pairs.forEach((p, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "mc" + (ok.has(i) ? " ok" : "") + (selE === i ? " sel" : ""); b.innerHTML = fmt(p[0]); b.addEventListener("click", () => { if (ok.has(i)) return; selE = selE === i ? null : i; check(); }); E.appendChild(b); });
+        order.forEach(i => { const b = document.createElement("button"); b.type = "button"; b.dataset.i = i; b.className = "mc" + (ok.has(i) ? " ok" : "") + (selZ === i ? " sel" : ""); b.textContent = R.pairs[i][1]; b.addEventListener("click", () => { if (ok.has(i)) return; selZ = selZ === i ? null : i; check(); }); Z.appendChild(b); });
+      }
+      function check() {
+        if (selE === null || selZ === null) { draw(); return; }
+        if (selE === selZ) {
+          ok.add(selE); speak(R.pairs[selE][0]); selE = selZ = null; FB.className = "fb ok"; FB.textContent = "配對成功！"; draw();
+          if (ok.size === n) roundEnd();
+        } else {
+          mist++; const z = selZ; selZ = null; draw();
+          const bad = Z.querySelector(`[data-i="${z}"]`); if (bad) bad.classList.add("bad");
+          FB.className = "fb no"; FB.textContent = "意思不一樣，再找找看。";
+        }
+      }
+      function roundEnd() {
+        const end = stage.querySelector("#mEnd");
+        const last = r === rounds.length - 1;
+        end.innerHTML = `<div class="box"><p class="score">這組完成！錯了 ${mist} 次</p><p class="muted">把這幾句大聲唸一遍再繼續。</p></div>`;
+        const b = document.createElement("button"); b.type = "button"; b.className = "btn primary";
+        b.textContent = last ? "全部完成！再玩一次" : "下一組";
+        b.addEventListener("click", () => { r = last ? 0 : r + 1; play(); });
+        end.firstChild.appendChild(b);
+        if (last) markDone(s.id);
+      }
+      stage.querySelector("#mHint").addEventListener("click", () => {
+        let t = selE; if (t === null) { t = [...Array(n).keys()].find(i => !ok.has(i)); if (t === undefined) return; selE = t; draw(); }
+        const el = Z.querySelector(`[data-i="${t}"]`); if (el) el.classList.add("hint");
+        FB.className = "fb"; FB.textContent = "虛線框的那一張就是答案。";
+      });
+      stage.querySelector("#mSkip").addEventListener("click", () => { r = (r + 1) % rounds.length; play(); });
+      draw();
+    }
+    play();
+  },
+  ben(stage, s) {
+    stage.innerHTML = `<h2>Ben’s Job</h2><p>先讀短文（可以聽、可以遮住中文），再回答下面的問題。</p>`;
+    const box = document.createElement("div");
+    hideToggle(stage, box, "遮住中文（點句子看答案）");
+    BEN.forEach(([en, zh]) => sentence(box, en, zh));
+    stage.appendChild(box);
+    stage.insertAdjacentHTML("beforeend", `<h2 style="margin-top:20px">讀一讀，回答問題</h2>`);
+    renderQuiz(stage, s, QUIZ.ben);
+  },
+  write(stage, s) {
+    const frames = [["I want to be a / an ＿＿＿＿ because I am good at ＿＿＿＿.", "I want to be a nurse because I am good at helping people."],
+                    ["Boys and girls can both be ＿＿＿＿, can’t they?", "Boys and girls can both be engineers, can’t they?"]];
+    stage.innerHTML = `<p>照著句型寫寫看，寫完按「聽一聽」聽自己的句子，再大聲唸一遍。寫的內容只存在這台裝置上。</p>`;
+    frames.forEach(([f, ex], i) => {
+      const b = document.createElement("div"); b.className = "box";
+      b.innerHTML = `<p><b>句型 ${i + 1}</b>：${f}</p><p class="muted">例：${ex}</p><textarea aria-label="寫下句型 ${i + 1} 的句子">${esc(store.write[i] || "")}</textarea><div class="row" style="margin-top:8px"><button type="button" class="btn small">儲存</button><button type="button" class="btn small">聽一聽</button><span class="muted saved"></span></div>`;
+      const ta = b.querySelector("textarea"), [sv, sp] = b.querySelectorAll("button"), msg = b.querySelector(".saved");
+      sv.addEventListener("click", () => { store.write[i] = ta.value; save(); msg.textContent = "已儲存"; if (Object.values(store.write).some(v => v && v.trim())) markDone(s.id); });
+      sp.addEventListener("click", () => { if (ta.value.trim()) speak(ta.value); });
+      stage.appendChild(b);
+    });
+  },
+  spell(stage, s) {
+    stage.innerHTML = `<p>看中文，把英文單字拼出來（第一個和最後一個字母已經給你）。打完按「檢查」。</p>`;
+    let right = 0, checked = new Set();
+    SPELL.forEach(([zh, w], i) => {
+      const q = document.createElement("div"); q.className = "q";
+      const pattern = w[0] + " " + "＿ ".repeat(w.length - 2) + w[w.length - 1];
+      q.innerHTML = `<div class="stem">${11 + i}. ${zh}　<span class="muted">${pattern}</span></div><div class="row"><input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${zh} 的英文"><button type="button" class="btn small">檢查</button><button type="button" class="btn small">看答案</button><button type="button" class="speak">聽一聽</button></div><div class="fb" role="status" aria-live="polite"></div>`;
+      const inp = q.querySelector("input"), [ck, show] = q.querySelectorAll(".btn"), fb = q.querySelector(".fb");
+      const go = () => {
+        if (inp.value.trim().toLowerCase() === w) { fb.className = "fb ok"; fb.textContent = "拼對了！"; if (!checked.has(i)) { checked.add(i); right++; } if (checked.size === SPELL.length) { markDone(s.id); } }
+        else { fb.className = "fb no"; fb.textContent = "還不對，再試一次（可以按「聽一聽」）。"; }
+      };
+      ck.addEventListener("click", go);
+      inp.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+      show.addEventListener("click", () => { fb.className = "fb"; fb.textContent = `答案：${w}`; });
+      q.querySelector(".speak").addEventListener("click", () => speak(w));
+      stage.appendChild(q);
+    });
+  }
+};
+
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
